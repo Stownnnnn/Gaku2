@@ -1,0 +1,73 @@
+CROC — LIVRE D'HEURES (variante « gothique vampire »)
+=====================================================
+Site statique (HTML/CSS/JS, sans installation) prêt pour GitHub Pages.
+
+CONTENU DU DOSSIER
+- index.html   la structure de la page
+- style.css    l'apparence (cathédrale, or, sang, vitraux)
+- app.js       les effets, les sons et les interactions
+- data.js      TOUT le texte de la fiche (c'est le seul fichier à modifier)
+- images/      les 5 illustrations
+- .nojekyll    fichier vide, à garder (dit à GitHub de servir le site tel quel)
+- LISEZMOI.txt ce fichier
+
+METTRE EN LIGNE SUR GITHUB PAGES
+1. Si tu as reçu un .zip : dézippe-le d'abord sur ton ordinateur.
+2. Sur github.com : bouton « + » en haut à droite > « New repository ».
+   Nom : par exemple « croc ». Visibilité : Public. Puis « Create repository ».
+3. Dans le dépôt vide, clique sur le lien « uploading an existing file »
+   (ou plus tard : « Add file » > « Upload files »).
+   Glisse le CONTENU du dossier (index.html, style.css, app.js, data.js,
+   LISEZMOI.txt, .nojekyll et le dossier images/), PAS le dossier lui-même :
+   index.html doit se retrouver à la racine du dépôt.
+   Astuce : le fichier .nojekyll est « caché » sur certains ordinateurs. S'il
+   n'apparaît pas, ce n'est pas grave, le site fonctionne sans.
+4. Clique sur « Commit changes ».
+5. Onglet « Settings » > « Pages » (menu de gauche) > « Build and deployment » :
+   Source = « Deploy from a branch », Branch = « main », dossier « / (root) »,
+   puis « Save ».
+6. Attends 1 à 2 minutes et recharge la page Pages : l'adresse s'affiche en haut,
+   du type https://TON-PSEUDO.github.io/croc/
+
+MODIFIER LA FICHE (data.js)
+- Sur GitHub : clique sur data.js > icône crayon (Edit) > modifie > « Commit changes ».
+  Le site se met à jour en une minute environ.
+- Garde la ponctuation du fichier : chaque texte est entre apostrophes ' ' ou
+  guillemets " ", et chaque élément se termine par une virgule.
+  Si un texte contient une apostrophe (l'arme, d'un...), écris-le entre
+  guillemets "..." ou mets une barre devant : 'l\'arme'.
+- Ce que chaque partie change sur le site :
+    nom, sousTitre, boot      -> la page d'ouverture (titre, sous-titre, lignes du Système)
+    champs, physique          -> Chapitre I (registre + texte à lettrine)
+    psycho, frere             -> Chapitre II (texte enluminé + procession ;
+                                 le nom du frère est celui qui porte la seule bougie allumée)
+    stats, rolls              -> Chapitre III (fioles de sang graduées sur 20 ; rosaces sur 100)
+                                 « bonus » affiche un sceau d'or sur la fiole
+    competences               -> Chapitre IV (le rituel du Lien Infortuné, niveaux LV.I à LV.V,
+                                 et la Maîtrise des armes lourdes)
+    catastrophes              -> événements tirés au sort pendant la simulation du rituel
+    titres                    -> Chapitre V (la pierre gravée)
+    galerie                   -> Chapitre VI (les vitraux)
+- Ce qui n'est pas connu reste « ??? » : rien n'a été inventé en dehors de ta fiche.
+- Deux libertés à vérifier :
+    * le dé du niveau 5 est simulé de 1 à 100 (champ « des » dans data.js) ;
+    * la liste « catastrophes » est un exemple libre, remplace-la à ta guise.
+
+AJOUTER UNE IMAGE
+1. Dans le dépôt, ouvre le dossier images/ > « Add file » > « Upload files ».
+2. Dans data.js, ajoute une ligne dans « galerie », par exemple :
+   { src: 'images/mon-image.jpg', alt: 'Description courte de l\'image' },
+
+À SAVOIR
+- Aucun fichier son : l'orgue, les cloches, le chœur, le crépitement des cierges,
+  le cœur, le marteau et le verre brisé sont fabriqués en direct par le navigateur.
+  Ils ne démarrent qu'après un clic sur « Pousser les portes » (règle des navigateurs).
+  Le bouton « Son » en haut à droite les coupe ou les rallume à tout moment.
+- Les polices viennent de Google Fonts. Sans connexion, le site utilise des polices
+  de secours (il reste lisible, mais moins gothique).
+- Compatible mobile et clavier (Tab / Entrée / Échap / flèches dans la visionneuse).
+  Si l'appareil demande « réduire les animations », les tremblements, la poussière
+  et les éclats de verre sont désactivés ou adoucis.
+- Illustrations : fan arts, droits réservés à leurs auteurs. Si tu connais les
+  artistes, ajoute leurs noms dans la phrase du pied de page (index.html,
+  ligne qui contient class="credit").
