@@ -57,47 +57,25 @@ function spriteURI(rows,pal={}){
  return 'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" shape-rendering="crispEdges">${r}</svg>`);
 }
 
-/* Croc — 16×24, trois vues (face / dos / profil gauche) + jambes animées.
-   Cheveux blanc-bleuté hérissés, yeux rouges, cicatrice, boucles d'oreille noires,
-   manteau sombre à col montant, mains bandées, baskets claires. */
-const CR_TOP_D=["......h..h......","...h..hh.hh..h..","...hh.hhhhhhhh..","..hhhhhhhhhhhh..",".hhHhhhhhhhhHhh.","..hHHhhhhhhHHh..","...HsHsssHssH...","...hsessssesh...","...ssrsssssss...","...oSssSSssSo...","....SssssssS....",".....cCCCCc.....","..occcCCCCccco..",".occCccccccCcco.","occCcccrcccCccco","ocCcccccccccCcco","bcCccccccccccCcb","bbCcccccccccccbb","BB.cccccccccc.BB","...pppppppppp..."];
-const CR_TOP_U=["......h..h......","...h..hh.hh..h..","...hh.hhhhhhhh..","..hhhhhhhhhhhh..",".hhHhhhhhhhhHhh.","..hHhhhhhhhhHh..","..hHhHhhhhHhHh..","...hHhhHhhHhh...","...sHhHhhHhHs...","...ohHhhhhHho...","....SsHHHHsS....",".....cCCCCc.....","..occcCCCCccco..",".occCccccccCcco.","occCccccccccCcco","ocCcccccccccCcco","bcCccccccccccCcb","bbCcccccccccccbb","BB.cccccccccc.BB","...pppppppppp..."];
-const CR_TOP_L=["........h.h.h...","......hhhhhh.h..",".....hhhhhhhhhh.","....hhhhhhhhHhhh","...hhhhhhhhhhHh.","...hHhhhhhhhHhh.","...Hsshhhhhhhh..","...sesshhhhHh...","..ssrsssSsHh....","...sSSssoHh.....","....SsssS.......",".....cCCcc......","....occCCcco....","...occCcccccco..","...ocCcccrcccco.","...oCcccccccco..","...bCccccccccco.","...bbcccccccc...","....Bcccccccc...",".....pppppppp..."];
-const LEG={
- d:[["...pppp..pppp...","...ppp....ppp...","..ffff....ffff..","..fFFf....fFFf.."],["...pppp..pppp...","..ppp.....ppp...",".ffff.....fff...",".fFFf..........."],["...pppp..pppp...","...ppp.....ppp..","...fff.....ffff.","...........fFFf."]],
- l:[[".....pppp.ppp...",".....ppp...pp...","....fffF..ffF...","....fFFF..fFF..."],["....ppppp.ppp...","...ppp.....ppp..","..fffF......ffF.","..fFF.......fFF."],[".....ppppp......","......pppp......","......fffF......","......fFFF......"]]
-};
+/* Personnages : le pixel art est dans sprites.js (window.CROC_SPRITES).
+   crocSprite(dir,f) — 16×24, dir 'down' | 'up' | 'left' | 'right' ;
+   f : 0 repos · 1 souffle · 2-5 marche (contact, passage, contact, passage). */
+const SPR_=window.CROC_SPRITES;
+const CROC_DY=SPR_.crocDy;
 function crocSprite(dir,frame){
- const k='croc-'+dir+frame;if(SPR[k])return SPR[k];
- const top=dir==='up'?CR_TOP_U:dir==='down'?CR_TOP_D:CR_TOP_L;const legs=(dir==='left'||dir==='right')?LEG.l[frame]:LEG.d[frame];
- const s=sprite(k+'raw',top.concat(legs));
+ frame=clamp(frame|0,0,5);const k='croc-'+dir+frame;if(SPR[k])return SPR[k];
+ const v=dir==='up'?'up':dir==='down'?'down':'left';const s=SPR_.rows(SPR_.croc[v][frame],SPR_.pal.croc);
  return SPR[k]=dir==='right'?flipped(k,s):s;
 }
-/* marteau à pointes, sur l'épaule (coordonnées du sprite 16×24) */
-function drawHammer(x,ox,oy,dir,sc=1){
- const R=(px,py,w,h,c)=>{x.fillStyle=c;x.fillRect(ox+px*sc,oy+py*sc,w*sc,h*sc)};
- const head=(hx,hy)=>{R(hx-1,hy-1,10,8,PAL.o);R(hx,hy,8,6,PAL.m);R(hx,hy,8,1,PAL.M);R(hx,hy,1,6,PAL.M);for(let j=0;j<2;j++)for(let i=0;i<3;i++){const sx=hx+1+i*2+j,sy=hy+1+j*2;R(sx,sy,1,1,PAL.b);R(sx+1,sy,1,1,PAL.o)}R(hx+8,hy+1,1,1,PAL.M);R(hx-2,hy+2,1,1,PAL.M)};
- if(dir==='down'){for(let i=0;i<12;i++)R(14+Math.round(i*.18),16-i,1,1,PAL.w);head(12,-1)}
- else if(dir==='up'){for(let i=0;i<12;i++)R(1-Math.round(i*.18),16-i,1,1,PAL.w);head(-4,-1)}
- else{const L=dir==='left';for(let i=0;i<12;i++)R(L?4+Math.round(i*.7):11-Math.round(i*.7),16-i,1,1,PAL.w);head(L?11:-3,-1)}
-}
-/* PNJ génériques 10×16 + variante (palette) */
-const NPC_ROWS=["...1111...","..111111..",".11111111.",".1ssssss1.",".1sossos1.","..ssssss..","...sSSs...","..222222..",".22222222.","s23222232s","s22222222s",".32222223.","..444444..","..44..44..","..44..44..",".oo....oo."];
-const NPC_ROWS2=NPC_ROWS.slice(0,13).concat(["..44..44..",".44....44.","oo......oo"]);
-const NPC_PALS=[
- {1:'#5b3a29',2:'#4b5d7a',3:'#2f3b52',4:'#2a2140'},{1:'#1a1422',2:'#7a4b5d',3:'#52303e',4:'#16131f'},{1:'#8a7a5a',2:'#5d7a4b',3:'#3b5230',4:'#2a2140'},
- {1:'#6b6577',2:'#7a6a4b',3:'#524630',4:'#1d1830'},{1:'#3a2a1a',2:'#45365e',3:'#2a2140',4:'#16131f'},{1:'#a05a3a',2:'#6b6577',3:'#45405a',4:'#1d1830'},
- {1:'#2a2a3a',2:'#8a3a3a',3:'#5a2020',4:'#16131f'},{1:'#c9a86a',2:'#3a5a6a',3:'#24404c',4:'#2a2140'}
-];
-const EILYN_PAL={1:'#fbf6ea',2:'#e8e0cc',3:'#c9c0aa',4:'#c9c0aa',s:'#fbf6ea',S:'#e8e0cc',o:'#45365e'};
-/* Eilyn — 16×24 comme Croc : cheveux argentés en bataille, yeux bleus, col roulé blanc côtelé,
-   long manteau beige ouvert, livre noir à la main (d'après l'illustration de référence). */
-const EIL_TOP=["....h..hhh..h...", "...hhhhhhhhhh...", "..hhhhhgghhhhh..", ".hhhHhhgghhhHhh.", "..hhHhhhhghhhHh.", ".hHhHhhshHhhhHh.", "..hHhssHhhsshHh.", "..hHseshHhsesHh.", "..oHssshhsssSH..", "...oSsssssssSo..", "....oSssmssSo...", ".....oSSSSSo....", "...ccttttttttc..", "..cCctTtTtTtcCc.", ".cCcwwwwwTtTtcC.", ".cCkKkkkkwtTtcC.", ".cCkKkkkkwtTtcC.", ".cCkkkkkkwtTtcC.", ".cCcsskkktTtTcC.", ".cCcCsscTtTtTcC."];
-const EIL_LEGS=[[".cCc.pppppp.cCc.", "..Cc.pp..pp.cC..", "....ppp..ppp....", "....fff..fff...."], [".cCc.pppppp.cCc.", "..Cc.pp...pp.C..", "...ppp....ppp...", "...fff.....ff..."]];
-const EIL_SPAL={o:'#2a2533',h:'#eef3f4',H:'#a7b6be',g:'#cdd8dd',s:'#efd7c8',S:'#c9a493',m:'#b98a7c',e:'#3d5fe0',t:'#eef1f7',T:'#aab5d2',c:'#ddd3c0',C:'#a99e8a',w:'#f6f3ea',k:'#1e2030',K:'#3c4260',p:'#3b3a48',f:'#2a2733',F:'#55526a'};
-const eilynSprite=f=>sprite('eilyn16-'+(f?1:0),EIL_TOP.concat(EIL_LEGS[f?1:0]),EIL_SPAL);
-const FOE_PAL={1:'#2a2140',2:'#3a3050',3:'#2a2140',4:'#1d1830',s:'#6a5590',S:'#45365e',o:'#0b0a10'};
-const npcSprite=(pi,f,pal)=>sprite('npc'+pi+'-'+f,f?NPC_ROWS2:NPC_ROWS,pal||NPC_PALS[pi%NPC_PALS.length]);
+/* marteau à pointes sur l'épaule (repère du sprite 16×24) */
+const drawHammer=(x,ox,oy,dir,sc=1)=>SPR_.hammer(x,ox,oy,dir,sc);
+/* PNJ génériques 12×18 (générateur dans sprites.js) */
+const NPC_PALS=SPR_.NPC_PALS;
+/* Eilyn — 16×24 : 0 lit · 1 souffle · 2 mèche · 3-4 tourne une page · 5-8 marche */
+const eilynSprite=f=>{f=clamp(f|0,0,8);const k='eilyn16-'+f;return SPR[k]||(SPR[k]=SPR_.rows(SPR_.eilyn.front[f],SPR_.pal.eilyn))};
+const FOE_PAL=null;
+const npcSprite=(pi,f,pal)=>{const k='npc'+pi+'-'+(f|0)+(pal?'p':'');return SPR[k]||(SPR[k]=SPR_.npc(typeof pi==='number'?pi:0,f|0,pal||null))};
+const foeSprite=f=>{const k='foe'+f;return SPR[k]||(SPR[k]=SPR_.foe(f))};
 
 /* main-curseur + icônes de menu */
 const HAND=["...oooo.........","..oaaaaoooooooo.",".oaaaaaaaaaaaaao",".oaaaaaaoooooooo",".oaaaaaaaaaao...",".oaaaaaaoooo....",".oadaaaaaaao....",".oddaaaaoooo....","..odddddo.......","...ooooo........"];
@@ -378,7 +356,7 @@ function drawFace(cv,who){
   else{x.drawImage(crocSprite('down',0),0,0,16,12,0,4,32,24)}
  }else if(who==='rel'&&FACE.rel){x.drawImage(FACE.rel,0,0,32,32);
  }else if(who==='pnj'){
-  x.fillStyle=COL.night;x.fillRect(0,0,32,32);x.drawImage(npcSprite(FACE.pnjPal||0,0),0,0,10,10,1,4,30,30);
+  x.fillStyle=COL.night;x.fillRect(0,0,32,32);x.drawImage(npcSprite(FACE.pnjPal||0,0),0,0,12,10,-2,2,36,30);
  }else{
   /* l'œil du Système */
   for(let y=0;y<32;y++)for(let i=0;i<32;i++){const dx=Math.abs(i-15.5),dy=Math.abs(y-15.5);const d=dx+dy*1.6;
@@ -484,7 +462,7 @@ const Title=(()=>{
   if(bolt){bolt.t+=dt;const on=bolt.t<.08||(bolt.t>.14&&bolt.t<.22);if(on){x.fillStyle='rgba(232,224,204,.18)';x.fillRect(0,0,W,wallY());x.fillStyle=COL.white;for(let i=1;i<bolt.pts.length;i++){const[a,b]=bolt.pts[i-1],[c,d]=bolt.pts[i];const n=Math.max(Math.abs(c-a),Math.abs(d-b));for(let k=0;k<=n;k++)x.fillRect(Math.round(a+(c-a)*k/n),Math.round(b+(d-b)*k/n),1,1)}}if(bolt.t>.3)bolt=null}
   drawLogo();
   /* Croc de dos sur le rempart, marteau sur l'épaule, manteau qui claque */
-  const k=H>W*1.2?2:1,wy=wallY(),cx=Math.round(W/2-8*k),cy=wy-24*k;const sp=crocSprite('up',0);
+  const k=H>W*1.2?2:1,wy=wallY(),cx=Math.round(W/2-8*k),cy=wy-24*k;const sp=crocSprite('up',RM?0:Math.floor(T/1.3)%2);
   x.drawImage(sp,cx,cy,16*k,24*k);drawHammer(x,cx,cy,'up',k);
   const fl=Math.floor(T*5)%2;x.fillStyle=PAL.c;x.fillRect(cx+(fl?15:16)*k,cy+(15+fl)*k,k,3*k);x.fillRect(cx+(fl?16:17)*k,cy+17*k,k,k);x.fillStyle=PAL.h;x.fillRect(cx+(fl?13:14)*k,cy+(fl?0:1)*k,k,k);
   /* pluie */
@@ -646,7 +624,7 @@ function Overworld(cv,hooks){
  cv.addEventListener('keyup',e=>{if(KM[e.key])keys.delete(KM[e.key])});
  cv.addEventListener('blur',()=>keys.clear());
  const toLocal=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)/r.width*VW+cam,(e.clientY-r.top)/r.height*H]};
- const hit=(px,py)=>npcs.find(n=>n.alive&&px>n.x-(n.eilyn?9:7)&&px<n.x+(n.eilyn?9:7)&&py>n.y-(n.eilyn?27:19)&&py<n.y+2);
+ const hit=(px,py)=>npcs.find(n=>n.alive&&px>n.x-(n.eilyn?9:7)&&px<n.x+(n.eilyn?9:7)&&py>n.y-(n.eilyn?27:21)&&py<n.y+2);
  cv.addEventListener('pointerdown',e=>{if(busy)return;const[px,py]=toLocal(e);const n=hit(px,py);cv.focus({preventScroll:true});croc.target=n?{npc:n}:{x:clamp(px,20,236),y:clamp(py,48,142)};SFX.move()});
  cv.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;const[px,py]=toLocal(e);const h=hit(px,py)||null;if(h!==hover){hover=h;if(h)SFX.move()}});
  cv.addEventListener('pointerleave',()=>hover=null);
@@ -678,20 +656,23 @@ function Overworld(cv,hooks){
     if(croc.target.npc&&(d<17||!tg.alive)){const n=croc.target.npc;croc.target=null;if(n.alive)interact(n)}
     else if(!croc.target.npc&&d<2)croc.target=null;else{vx=dx/d;vy=dy/d}}}
   const l=Math.hypot(vx,vy);if(l){vx/=l;vy/=l;croc.dir=Math.abs(vx)>Math.abs(vy)+.1?(vx<0?'left':'right'):(vy<0?'up':'down');const m=step(croc,vx,vy,dt,54);if(!m&&croc.target&&!croc.target.npc)croc.target=null;croc.moving=m}else croc.moving=false;
-  if(croc.moving){croc.ft+=dt;if(croc.ft>.14){croc.ft=0;croc.f=croc.f===1?2:1;if(croc.f===1)SFX.step()}}else croc.f=0;
+  /* marche en 4 temps (contact, passage, contact, passage) ; au repos il respire */
+  if(croc.moving){croc.ft+=dt;if(croc.ft>.11){croc.ft=0;croc.wf=((croc.wf||0)+1)%4;if(croc.wf%2===0)SFX.step()}croc.f=2+(croc.wf||0)}else{croc.wf=0;croc.ft=.11;croc.f=(T%2.6)<1.4?0:1}
   for(const n of npcs){if(!n.alive||n.frozen)continue;
-   if(n.mt>0){n.mt-=dt;const m=step(n,n.mvx,n.mvy,dt,n.eilyn?16:20);if(!m)n.mt=0;n.ft+=dt;if(n.ft>.2){n.ft=0;n.f^=1}if(n.mvx)n.dir=n.mvx<0?1:-1}
-   else{n.f=0;n.wait-=dt;if(n.wait<=0){const a=pick([[1,0],[-1,0],[0,1],[0,-1],[.7,.7],[-.7,.7],[.7,-.7],[-.7,-.7]]);n.mvx=a[0];n.mvy=a[1];n.mt=rnd(.4,1.4);n.wait=rnd(.8,3)}}
+   if(n.mt>0){n.mt-=dt;const m=step(n,n.mvx,n.mvy,dt,n.eilyn?16:20);if(!m)n.mt=0;n.ft+=dt;if(n.ft>.15){n.ft=0;n.wf=((n.wf||0)+1)%4}n.f=(n.eilyn?5:2)+(n.wf||0);if(n.mvx)n.dir=n.mvx<0?1:-1}
+   else{n.f=idleF(n);n.wait-=dt;if(n.wait<=0){const a=pick([[1,0],[-1,0],[0,1],[0,-1],[.7,.7],[-.7,.7],[.7,-.7],[-.7,-.7]]);n.mvx=a[0];n.mvy=a[1];n.mt=rnd(.4,1.4);n.wait=rnd(.8,3)}}
    if(n.spawnT<1)n.spawnT+=dt*2;}
   near=null;let bd=24;for(const n of npcs){if(!n.alive)continue;const d=Math.hypot(n.x-croc.x,(n.y-croc.y)*1.3);if(d<bd){bd=d;near=n}}
   if(!RM&&Math.random()<dt*1.2){const n=eil;if(n.alive)parts.push({type:'heart',x:n.x+rnd(-3,3),y:n.y-20,vx:rnd(-4,4),vy:-14,life:0,max:1.3,col:COL.blood2})}
   for(const p of parts){p.life+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;if(p.type==='smoke'){p.vx*=.92;p.vy*=.92}else if(p.type==='bit')p.vy+=160*dt;else if(p.type==='heart')p.vx*=.97}
   parts=parts.filter(p=>p.life<p.max);
  }
+ /* au repos : PNJ qui respirent ; Eilyn lit, tourne une page de temps en temps, une mèche glisse */
+ function idleF(n){const t=T+(n.ph||(n.ph=rnd(0,9)));if(!n.eilyn)return(t%2.2)<1.1?0:1;const c=t%7;if(c>5.3&&c<5.55)return 3;if(c>=5.55&&c<5.8)return 4;if(c>2.6&&c<3.4)return 2;return(t%2.4)<1.2?0:1}
  function drawCroc(){
-  const sp=crocSprite(croc.dir,croc.f),ox=Math.round(croc.x-8),oy=Math.round(croc.y-24)-(croc.f?1:0);
+  const sp=crocSprite(croc.dir,croc.f),ox=Math.round(croc.x-8),oy=Math.round(croc.y-24);
   x.drawImage(sp,ox,oy);
-  if(croc.swing<0){drawHammer(x,ox,oy,croc.dir,1)}
+  if(croc.swing<0){drawHammer(x,ox,oy+CROC_DY[croc.f],croc.dir,1)}
   else{const p=croc.swing,e=p<.55?(p/.55)**2:1,phi=Math.PI*.8-(Math.PI*.8+.35)*e;const fx=croc.dir==='left'?-1:croc.dir==='right'?1:0;const hx=croc.x+(fx?fx*2:5),hy=croc.y-14,R=16;
    let px,py;if(fx){px=hx+fx*R*Math.cos(phi);py=hy-R*Math.sin(phi)}else{const fy=croc.dir==='down'?1:-1;px=hx+2;py=hy-R*Math.sin(phi)+fy*R*Math.max(0,Math.cos(phi))*.8}
    for(let k=0;k<=8;k++){x.fillStyle=PAL.w;x.fillRect(Math.round(hx+(px-hx)*k/8),Math.round(hy+(py-hy)*k/8),1,1)}
@@ -700,11 +681,11 @@ function Overworld(cv,hooks){
  }
  function drawNpc(n){
   const sp=n.eilyn?eilynSprite(n.f):npcSprite(n.pi,n.f);const img=n.dir===-1?flipped((n.eilyn?'eilyn16':'npc'+n.pi)+'-'+n.f,sp):sp;
-  const ox=Math.round(n.x-(n.eilyn?8:5)),oy=Math.round(n.y-(n.eilyn?24:16));
+  const ox=Math.round(n.x-sp.width/2),oy=Math.round(n.y-sp.height);
   if(n.spawnT<1&&Math.floor(T*20)%2)return;
   if(n.eilyn){const g=tinted('eil16-'+n.f,img,COL.ice);x.globalAlpha=.3+.12*Math.sin(T*3);x.drawImage(g,ox-1,oy);x.drawImage(g,ox+1,oy);x.drawImage(g,ox,oy-1);x.globalAlpha=1}
   x.drawImage(img,ox,oy);
-  if(n.judged==='bon'){const b=Math.floor(T*3)%2;drawText(x,'♪',n.x-2,n.y-26-b,COL.ice,1)}
+  if(n.judged==='bon'){const b=Math.floor(T*3)%2;drawText(x,'♪',n.x-2,n.y-28-b,COL.ice,1)}
  }
  function draw(){
   const tc=clamp(Math.round(croc.x-VW/2),0,W-VW);cam+=(tc-cam)*.15;if(Math.abs(tc-cam)<.5)cam=tc;cam=VW===W?0:cam;
@@ -725,7 +706,7 @@ function Overworld(cv,hooks){
   x.restore();x.drawImage(vig,0,0);x.save();x.translate(-Math.round(cam),0);
   /* étiquettes */
   const show=new Set([hover,near].filter(Boolean));
-  for(const n of show){if(!n.alive)continue;const top=n.y-(n.eilyn?26:18)-(n.judged?6:0);
+  for(const n of show){if(!n.alive)continue;const top=n.y-(n.eilyn?26:20)-(n.judged?6:0);
    if(n.eilyn)drawLabel(x,n.name+' ♥',n.x,top-1,COL.bone,COL.blood0,COL.bone);
    else drawLabel(x,n.judged==='bon'?'BON NPC':'NPC',n.x,top-1,n.judged?COL.ice:COL.bone,COL.ink,n.judged?COL.ice2:COL.gray)}
   if(!show.has(eil)&&eil.alive){const b=Math.floor(T*2)%2;drawText(x,'♥',eil.x-2,eil.y-34-b,COL.blood2,1)}
@@ -818,25 +799,26 @@ function Battle(cv){
   for(const q of S.pops)q.life+=dt;S.pops=S.pops.filter(q=>q.life<1.6);
  }
  function drawCroc(){
-  const c=S.croc,T=S.T,sc=2;const sp=crocSprite('left',0);const ox=Math.round(c.x+c.dx-16),oy=Math.round(c.y-48+c.dy+(c.hurt>0?4:0)+(Math.floor(T*1.6)%2&&!c.hurt?1:0));
+  const c=S.croc,T=S.T,sc=2;const fr=c.hurt>0?0:Math.floor(T*1.3)%2;const sp=crocSprite('left',fr);const ox=Math.round(c.x+c.dx-16),oy=Math.round(c.y-48+c.dy+(c.hurt>0?4:0));
   x.fillStyle='rgba(11,10,16,.6)';x.fillRect(Math.round(c.x+c.dx-12),c.y-1,24,4);
-  const img=c.flash>0&&Math.floor(T*24)%2?tinted('crocL',sp,COL.white):sp;
+  const img=c.flash>0&&Math.floor(T*24)%2?tinted('crocL'+fr,sp,COL.white):sp;
   x.drawImage(img,ox,oy,32,48);
   if(c.swing<0)drawHammer(x,ox,oy,'left',sc);
   else{const p=c.swing,e=p<.55?(p/.55)**2:1,phi=Math.PI*.8-(Math.PI*.8+.4)*e;const hx=ox+8,hy=oy+30,R=32;const px=hx-R*Math.cos(phi),py=hy-R*Math.sin(phi);
    x.fillStyle=PAL.w;for(let k=0;k<=14;k++)x.fillRect(Math.round(hx+(px-hx)*k/14),Math.round(hy+(py-hy)*k/14),2,2);
    if(p<.62){x.fillStyle='rgba(232,224,204,.45)';for(let k=1;k<5;k++){const q=Math.max(0,e-k*.1),ph=Math.PI*.8-(Math.PI*.8+.4)*q;x.fillRect(Math.round(hx-R*Math.cos(ph)-6),Math.round(hy-R*Math.sin(ph)-5),12,10)}}
-   x.fillStyle=PAL.m;x.fillRect(Math.round(px-7),Math.round(py-6),14,12);x.fillStyle=PAL.M;x.fillRect(Math.round(px-7),Math.round(py-6),14,2);for(let i=0;i<4;i++)x.fillRect(Math.round(px-6+i*4),Math.round(py-8),2,2);x.fillStyle=PAL.o;x.fillRect(Math.round(px-7),Math.round(py+4),14,2)}
+   x.drawImage(SPR_.hammerHead(),Math.round(px-10),Math.round(py-8),20,16)}
   if(c.cast>0){const[hx,hy]=hand();const r=2+Math.floor(T*10)%2;x.fillStyle=COL.blood2;x.fillRect(hx-r,hy-r,r*2,r*2);x.fillStyle=COL.bone;x.fillRect(hx-1,hy-1,2,2)}
  }
  function drawFoe(){
-  const f=S.foe,T=S.T;const sp=npcSprite('foe',0,FOE_PAL);const sway=Math.round(Math.sin(T*2.2));const ox=Math.round(f.x+f.dx-15+sway+(f.hurt>0?(Math.floor(T*30)%2?-2:2):0)),oy=Math.round(f.y-48+(f.hurt>0?2:0));
-  x.fillStyle='rgba(11,10,16,.6)';x.fillRect(Math.round(f.x-15),f.y-1,30,4);
-  const img=f.flash>0&&Math.floor(T*24)%2?tinted('foeW',sp,COL.white):sp;
+  const f=S.foe,T=S.T;const fr=f.hurt>0?2:Math.floor(T*1.1)%2;const sp=foeSprite(fr);const sway=Math.round(Math.sin(T*2.2));const ox=Math.round(f.x+f.dx-18+sway+(f.hurt>0?(Math.floor(T*30)%2?-2:2):0)),oy=Math.round(f.y-52+(f.hurt>0?2:0));
+  x.fillStyle='rgba(11,10,16,.6)';x.fillRect(Math.round(f.x-17),f.y-1,34,4);
+  const img=f.flash>0&&Math.floor(T*24)%2?tinted('foeW'+fr,sp,COL.white):sp;
   if(f.down>0)x.globalAlpha=Math.max(0,1-f.down);
-  const rim=tinted('foeR',sp,COL.vio3);x.drawImage(rim,ox-2,oy,30,48);x.drawImage(rim,ox+2,oy,30,48);x.drawImage(rim,ox,oy-2,30,48);x.drawImage(tinted('foeK',sp,COL.ink),ox+1,oy+2,30,48);
-  x.drawImage(img,ox,oy,30,48);
-  x.fillStyle=COL.blood2;if(Math.floor(T*3)%5){x.fillRect(ox+9,oy+12,3,3);x.fillRect(ox+18,oy+12,3,3)}
+  const rim=tinted('foeR'+fr,sp,COL.vio3);x.globalAlpha*=.75;x.drawImage(rim,ox-1,oy);x.drawImage(rim,ox+1,oy);x.drawImage(rim,ox,oy-1);x.globalAlpha=f.down>0?Math.max(0,1-f.down):1;x.drawImage(tinted('foeK'+fr,sp,COL.ink),ox+1,oy+2);
+  x.drawImage(img,ox,oy);
+  /* yeux rouges qui clignent, lueur */
+  const eb=fr===1?1:0,eh=fr===2?-2:0;if(Math.floor(T*3)%7){for(const[ex,ey]of SPR_.foeEyes){x.fillStyle=COL.blood0;x.fillRect(ox+ex+eh-1,oy+ey+eb-1,4,3);x.fillStyle=COL.blood2;x.fillRect(ox+ex+eh,oy+ey+eb,2,1);x.fillStyle='#ffd0d6';x.fillRect(ox+ex+eh,oy+ey+eb,1,1)}}
   drawText(x,'CIBLE',Math.round(f.x-textW('CIBLE')/2),oy-12,COL.gray2,1);
   if(f.marks>0){const cx=Math.round(f.x),cy=oy-24+Math.round(Math.sin(T*3)*1.5),r=Math.floor(T*8)%4;
    /* sceau du Chaos : losange rouge + croix, qui pulse */
@@ -863,7 +845,7 @@ function Battle(cv){
    else if(p.t==='drop'){x.fillStyle=COL.ice;x.fillRect(X,Y,1,2)}
    else if(p.t==='dust'){x.fillStyle=COL.gray2;if(bay(X,Y)<k)x.fillRect(X,Y,1,1)}
    else if(p.t==='flame'){x.fillStyle=k>.7?COL.bone:k>.45?COL.blood2:k>.2?COL.blood:COL.blood0;const s=k>.5?2:1;x.fillRect(X,Y,s,s+1)}
-   else if(p.t==='run'){const sp=tinted('runner'+p.pi,npcSprite(p.pi,0),COL.ink);const b=Math.floor(p.life*16)%2;x.drawImage(sp,X-10,Y-32-b,20,32);x.fillStyle=COL.blood2;x.fillRect(X-4,Y-24-b,2,2);x.fillRect(X+2,Y-24-b,2,2)}
+   else if(p.t==='run'){const wf=2+Math.floor(p.life*14)%4;const sp=tinted('runner'+p.pi+'-'+wf,npcSprite(p.pi,wf),COL.ink);x.drawImage(sp,X-12,Y-36,24,36);x.fillStyle=COL.blood2;x.fillRect(X-4,Y-30+(wf%2?0:2),2,2);x.fillRect(X+2,Y-30+(wf%2?0:2),2,2)}
    else if(p.t==='luck'){const u=Math.min(1,p.life/p.max);const[ax,ay]=hand(),[bx,by]=chest();const px=Math.round(ax+(bx-ax)*u),py=Math.round(ay+(by-ay)*u+Math.sin(u*9+p.ph)*4);x.fillStyle=p.col;x.fillRect(px-1,py,3,1);x.fillRect(px,py-1,1,3)}
    else if(p.t==='absorb'){const u=Math.min(1,p.life/p.max),e=u*u;const[bx,by]=chest();const ax=S.croc.x+S.croc.dx-2,ay=S.croc.y-26;const px=Math.round(bx+(ax-bx)*e+Math.sin(u*7+p.ph)*10*(1-u)),py=Math.round(by+(ay-by)*e-Math.sin(u*3.14)*18);x.fillStyle=p.col;x.fillRect(px-1,py-1,2,2);if(u>.85){x.fillStyle=COL.white;x.fillRect(px,py,1,1)}}
    else if(p.t==='star'){x.fillStyle=COL.bone;const L=Math.round(8*k);for(let i=2;i<L;i++)x.fillRect(Math.round(p.x+Math.cos(p.a)*i*2),Math.round(p.y+Math.sin(p.a)*i*2),2,2)}
@@ -1102,6 +1084,7 @@ if(typeof window.CrocBalade==='function'){
  catch(e){console.error('BALADE indisponible :',e)}
 }
 
+if(/[?&]test\b/.test(location.search))window.__spr={crocSprite,drawHammer,eilynSprite,npcSprite,NPC_PALS,foeSprite,tinted,S:SPR_};/* aide aux tests uniquement */
 SCREENS.titres={song:null,mount(p){
  const TT=D.titres||[];const bon=(D.stats||[]).filter(s=>s.bonus);
  const big=t=>[...`[${t}]`].map((c,i,a)=>c===' '?' ':`<span class="ch ${c==='['||c===']'?'br':c==='!'?'ex':''}" style="--i:${i}" aria-hidden="true">${esc(c)}</span>`).join('');

@@ -11,6 +11,9 @@ fabriqués en direct par le navigateur.
 CONTENU DU DOSSIER
 - index.html, style.css, app.js : le site (ne pas renommer).
 - balade.js : le mini-jeu BALADE (si ce fichier manque, l'entrée BALADE disparaît du menu).
+- sprites.js : le pixel art des personnages (Croc, Eilyn, PNJ, monstre du combat, marteau),
+  partagé par tout le site. Croc et Eilyn y sont dessinés en tableaux de pixels lisibles
+  (une lettre = une couleur de la palette juste au-dessus) : on peut retoucher un pixel à la main.
 - data.js : TOUT le contenu de la fiche (textes, stats, compétences…).
 - images/ : les 5 illustrations.
 - .nojekyll : fichier vide utile à GitHub Pages (laisse-le).
@@ -113,3 +116,13 @@ BALADE (nouvel écran du menu) — mini-jeu en vue de côté
 - Musique et bruitages sont synthétisés ; pendant le ralenti la bande ralentit et le son s'étouffe.
 - Le bouton VHS (= bouton CRT du site) coupe le filtre vidéo ; si le système demande de réduire
   les animations, tremblements, flashs et effets VHS sont supprimés.
+
+PIXEL ART DES PERSONNAGES (sprites.js)
+- Croc (vue de dessus, 16×24) : face, dos et profil ; repos qui respire, marche en 4 temps,
+  marteau à pointes avec son ruban. Ombrage en 3 tons, col montant, avant-bras bandés, baskets.
+- Eilyn : de face (il lit, souffle, une mèche glisse, il tourne une page, marche en 4 temps)
+  et de profil dans la BALADE. Il n'a aucune réplique inventée.
+- PNJ : 12 silhouettes (coiffure, tenue, accessoire, teint) ; ils respirent et marchent.
+- Monstre de la scène de combat : colosse d'ombre aux yeux rouges, il respire et recule quand il est touché.
+- Dans la BALADE, Croc est articulé (course, saut, apex, chute, réceptions, roulade, coup de marteau
+  avec anticipation, impact et suivi, pilon) ; mèches, pan de manteau et ruban bougent avec lui.
