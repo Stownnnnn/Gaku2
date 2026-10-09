@@ -3,296 +3,117 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Croc — Livre d'heures</title>
-<meta name="description" content="Croc, vampire, 22 ans, muet de naissance. Un livre d'heures maudit, à lire à la lueur des cierges. Univers du Dédale.">
-<meta name="theme-color" content="#070406">
-<meta property="og:title" content="Croc — Livre d'heures">
-<meta property="og:description" content="Il voit les gens comme des NPC. Entrez dans la nef, prudemment.">
-<meta property="og:image" content="images/croc-encre.jpg">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23070406'/%3E%3Cpath d='M16 3c-2 4-7 9-7 15a7 7 0 0 0 14 0c0-6-5-11-7-15z' fill='%238a0f1c' stroke='%23c9a24a' stroke-width='1.2'/%3E%3C/svg%3E">
+<title>CROC — Le Dédale (16-bit)</title>
+<meta name="description" content="Croc, vampire de 22 ans, muet de naissance. Fiche de personnage du Dédale, version jeu vidéo rétro.">
+<meta name="theme-color" content="#0b0a10">
+<meta property="og:title" content="CROC — Le Dédale">
+<meta property="og:description" content="APPUIE SUR START. Presque tout le monde est un NPC.">
+<meta property="og:image" content="images/croc-accroupi.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Crect width='8' height='8' fill='%230b0a10'/%3E%3Cpath d='M1 1h1v1H1zM3 1h1v1H3zM5 1h1v1H5zM1 2h6v2H1z' fill='%23e8e0cc'/%3E%3Cpath d='M2 4h4v1H2z' fill='%23d9cbbd'/%3E%3Cpath d='M2 5h4v2H2z' fill='%232a2140'/%3E%3Cpath d='M3 4h1v1H3zM5 4h1v1H5z' fill='%23e0263d'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IM+Fell+English+SC&family=Pirata+One&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Pixelify+Sans:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
-<script>document.documentElement.classList.add('js')</script>
 </head>
-<body>
+<body class="crt">
 
-<a class="evitement" href="#chap-1">Aller au contenu</a>
+<noscript><p class="noscript">Ce site est un petit jeu : active JavaScript pour appuyer sur START.</p></noscript>
 
-<!-- ============ LA PORTE (entrée : le geste qui réveille le son) ============ -->
-<div id="porte" role="dialog" aria-modal="true" aria-labelledby="porte-nom" aria-describedby="porte-note">
-  <div class="porte-scene" aria-hidden="true">
-    <svg class="porte-pierre" viewBox="0 0 520 560" preserveAspectRatio="xMidYMax meet">
-      <defs>
-        <linearGradient id="pg-pierre" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#2a2125"/><stop offset="1" stop-color="#120c0e"/>
-        </linearGradient>
-        <linearGradient id="pg-or" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#e8cf8a"/><stop offset=".5" stop-color="#8c7037"/><stop offset="1" stop-color="#c9a24a"/>
-        </linearGradient>
-      </defs>
-      <path d="M0 560 V230 C0 110 140 30 260 4 C380 30 520 110 520 230 V560 Z" fill="url(#pg-pierre)"/>
-      <path d="M22 560 V236 C22 128 150 52 260 28 C370 52 498 128 498 236 V560" fill="none" stroke="#3b2e33" stroke-width="10"/>
-      <path d="M40 560 V240 C40 142 160 72 260 50 C360 72 480 142 480 240 V560" fill="none" stroke="url(#pg-or)" stroke-width="1.6" opacity=".7"/>
-      <path d="M52 560 V244 C52 152 166 88 260 68" fill="none" stroke="#0a0607" stroke-width="3"/>
-      <path d="M468 560 V244 C468 152 354 88 260 68" fill="none" stroke="#0a0607" stroke-width="3"/>
-      <g fill="#3b2e33" stroke="#0a0607" stroke-width="2">
-        <circle cx="260" cy="40" r="9"/><circle cx="60" cy="236" r="6"/><circle cx="460" cy="236" r="6"/>
-      </g>
-      <path d="M0 548 H520 V560 H0Z" fill="#0a0607"/>
-    </svg>
-    <div class="porte-ouverture">
-      <div class="porte-lueur"></div>
-      <div class="battant g">
-        <svg viewBox="0 0 200 440" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="pg-bois" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#1c0f0b"/><stop offset=".5" stop-color="#3a1f15"/><stop offset="1" stop-color="#22120d"/>
-            </linearGradient>
-          </defs>
-          <path d="M0 440 V150 C0 70 80 18 200 0 V440 Z" fill="url(#pg-bois)" stroke="#0a0607" stroke-width="4"/>
-          <g stroke="#120806" stroke-width="2.5" opacity=".9">
-            <path d="M40 440 V86"/><path d="M80 440 V48"/><path d="M120 440 V26"/><path d="M160 440 V10"/>
-          </g>
-          <g fill="none" stroke="#151214" stroke-width="12" stroke-linecap="round">
-            <path d="M6 128 H150 C170 128 176 116 170 106"/>
-            <path d="M6 306 H150 C170 306 176 318 170 328"/>
-          </g>
-          <g fill="#4a3d36">
-            <circle cx="24" cy="128" r="4"/><circle cx="64" cy="128" r="4"/><circle cx="104" cy="128" r="4"/><circle cx="144" cy="128" r="4"/>
-            <circle cx="24" cy="306" r="4"/><circle cx="64" cy="306" r="4"/><circle cx="104" cy="306" r="4"/><circle cx="144" cy="306" r="4"/>
-          </g>
-          <circle cx="172" cy="232" r="20" fill="none" stroke="#8c7037" stroke-width="5"/>
-          <circle cx="172" cy="212" r="7" fill="#3b2e33" stroke="#8c7037" stroke-width="2"/>
-        </svg>
-      </div>
-      <div class="battant d">
-        <svg viewBox="0 0 200 440" preserveAspectRatio="none">
-          <path d="M0 440 V150 C0 70 80 18 200 0 V440 Z" fill="url(#pg-bois)" stroke="#0a0607" stroke-width="4"/>
-          <g stroke="#120806" stroke-width="2.5" opacity=".9">
-            <path d="M40 440 V86"/><path d="M80 440 V48"/><path d="M120 440 V26"/><path d="M160 440 V10"/>
-          </g>
-          <g fill="none" stroke="#151214" stroke-width="12" stroke-linecap="round">
-            <path d="M6 128 H150 C170 128 176 116 170 106"/>
-            <path d="M6 306 H150 C170 306 176 318 170 328"/>
-          </g>
-          <g fill="#4a3d36">
-            <circle cx="24" cy="128" r="4"/><circle cx="64" cy="128" r="4"/><circle cx="104" cy="128" r="4"/><circle cx="144" cy="128" r="4"/>
-            <circle cx="24" cy="306" r="4"/><circle cx="64" cy="306" r="4"/><circle cx="104" cy="306" r="4"/><circle cx="144" cy="306" r="4"/>
-          </g>
-          <circle cx="172" cy="232" r="20" fill="none" stroke="#8c7037" stroke-width="5"/>
-          <circle cx="172" cy="212" r="7" fill="#3b2e33" stroke="#8c7037" stroke-width="2"/>
-        </svg>
-      </div>
-      <div class="porte-serrure"></div>
+<!-- =========================== ÉCRAN TITRE =========================== -->
+<section id="title-screen" class="screen" aria-label="Écran titre">
+  <canvas id="tcv" aria-hidden="true"></canvas>
+  <h1 class="sr-only">CROC — Le Dédale</h1>
+  <div class="t-ui">
+    <div class="t-menu" id="tmenu">
+      <button type="button" class="t-opt t-start" id="startSound" data-sfx="none"><span class="blink">APPUIE SUR START</span></button>
+      <button type="button" class="t-opt t-mute" id="startMute" data-sfx="none">JOUER SANS SON</button>
     </div>
-  </div>
-  <div class="porte-txt">
-    <p class="porte-kicker">Le Dédale · Livre d'heures</p>
-    <p class="porte-nom" id="porte-nom">Croc</p>
-    <p class="porte-note" id="porte-note">Ce livre se lit à la lueur des cierges, et avec le son.</p>
-    <div class="porte-btns">
-      <button type="button" class="btn-or" id="entrerSon">Pousser les portes</button>
-      <button type="button" class="btn-ombre" id="entrerSilence">Entrer en silence</button>
-    </div>
-  </div>
-</div>
-
-<!-- ============ DÉCOR FIXE : la nef, la poussière, la pénombre ============ -->
-<div id="fond" aria-hidden="true"></div>
-<canvas id="poussiere" aria-hidden="true"></canvas>
-<div id="penombre" aria-hidden="true"></div>
-<div id="vignette" aria-hidden="true"></div>
-<div id="grain" aria-hidden="true"></div>
-<canvas id="eclats" aria-hidden="true"></canvas>
-<div id="flash" aria-hidden="true"></div>
-<canvas id="curseur" aria-hidden="true"></canvas>
-
-<!-- ============ EN-TÊTE ============ -->
-<header class="entete" id="entete">
-  <a class="entete-logo" href="#frontispice" aria-label="Retour au frontispice">C<span>roc</span></a>
-  <p class="entete-chap" aria-live="off"><span id="chapNum">Frontispice</span><b id="chapNom"></b></p>
-  <div class="entete-btns">
-    <button type="button" class="btn-petit" id="btnSommaire" aria-expanded="false" aria-controls="sommaire">Sommaire</button>
-    <button type="button" class="btn-petit son" id="btnSon" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-3 0-5 2.4-5 5.5V13l-2 3.5h14L17 13V8.5C17 5.4 15 3 12 3z"/><path d="M10 18.5a2 2 0 0 0 4 0"/><path class="barre" d="M4 4 L20 20"/></svg><span id="sonTxt">Son : coupé</span></button>
-  </div>
-  <i class="entete-progres" id="progres"></i>
-</header>
-<nav class="sommaire" id="sommaire" aria-label="Sommaire" hidden>
-  <p class="sommaire-titre">Sommaire</p>
-  <ol>
-    <li><a href="#frontispice"><span>✠</span>Frontispice</a></li>
-    <li><a href="#chap-1"><span>I</span>Identité</a></li>
-    <li><a href="#chap-2"><span>II</span>Psychologie</a></li>
-    <li><a href="#chap-3"><span>III</span>Statistiques</a></li>
-    <li><a href="#chap-4"><span>IV</span>Compétences</a></li>
-    <li><a href="#chap-5"><span>V</span>Titre</a></li>
-    <li><a href="#chap-6"><span>VI</span>Galerie</a></li>
-  </ol>
-</nav>
-
-<main id="nef">
-
-<!-- ============ FRONTISPICE ============ -->
-<section class="chap frontispice" id="frontispice" data-num="Frontispice" data-nom="">
-  <div class="front-grille">
-    <div class="front-txt">
-      <p class="kicker">Livre d'heures · Le Dédale</p>
-      <h1 class="titre-croc" id="titreCroc" tabindex="-1"><span class="titre-txt" id="titreTxt">Croc</span><span class="gouttes" id="gouttes" aria-hidden="true"></span></h1>
-      <p class="sous-titre" id="sousTitre"></p>
-      <div class="systeme boot" id="boot" aria-live="polite"></div>
-      <p class="muet" id="muet"><span aria-hidden="true">· · ·</span> il ne dit rien.</p>
-    </div>
-    <div class="front-art">
-      <div class="cierge-hote haut"><canvas class="cierge" data-cire="1" data-lux="1"></canvas></div>
-      <figure class="ogive cadre-or" id="portrait">
-        <span class="ogive-img"><img src="images/croc-encre.jpg" alt="Portrait de Croc à l'encre, du sang sur le visage" fetchpriority="high"></span>
-        <svg class="ogive-plomb" viewBox="0 0 100 160" preserveAspectRatio="none" aria-hidden="true"><path d="M2 158 V62 C2 30 26 10 50 2 C74 10 98 30 98 62 V158 Z"/></svg>
-      </figure>
-      <div class="cierge-hote haut"><canvas class="cierge" data-cire="1" data-lux="1"></canvas></div>
-    </div>
-  </div>
-  <a class="descendre" href="#chap-1"><span>Descendre dans la nef</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9l7 7 7-7"/></svg></a>
-</section>
-
-<!-- ============ I · IDENTITÉ ============ -->
-<section class="chap" id="chap-1" data-num="Chapitre I" data-nom="Identité">
-  <header class="chap-tete brule">
-    <div class="cierge-hote"><canvas class="cierge petit" data-cire=".7"></canvas></div>
-    <div>
-      <p class="chap-kicker">Chapitre I · De la créature</p>
-      <h2>Identité</h2>
-      <p class="systeme">[SYSTÈME] Fiche // Personnage</p>
-    </div>
-    <div class="cierge-hote"><canvas class="cierge petit" data-cire=".55"></canvas></div>
-  </header>
-  <div class="folio brule">
-    <div class="id-grille">
-      <figure class="miniature cadre-or">
-        <img src="images/croc-marteau.jpg" alt="Croc de profil, le marteau sur l'épaule" loading="lazy">
-        <figcaption>Le porteur du marteau</figcaption>
-      </figure>
-      <div>
-        <h3 class="rubrique">Registre</h3>
-        <dl class="registre" id="champs"></dl>
-        <h3 class="rubrique">Du corps</h3>
-        <div class="texte enlumine" id="physique"></div>
-      </div>
-    </div>
+    <p class="t-hint">Entrée : START · ↑↓ : choisir · Les sons sont créés par ton navigateur</p>
+    <p class="credit">Illustrations : fan arts, droits réservés à leurs auteurs.</p>
   </div>
 </section>
 
-<!-- ============ II · PSYCHOLOGIE ============ -->
-<section class="chap" id="chap-2" data-num="Chapitre II" data-nom="Psychologie">
-  <header class="chap-tete brule">
-    <div class="cierge-hote"><canvas class="cierge petit" data-cire=".6"></canvas></div>
-    <div>
-      <p class="chap-kicker">Chapitre II · De l'âme</p>
-      <h2>Psychologie</h2>
-      <p class="systeme">[SYSTÈME] Fiche // Psychologie</p>
+<!-- =========================== JEU =========================== -->
+<div id="game" hidden>
+  <header class="hud">
+    <div class="hud-logo" aria-hidden="true">CROC</div>
+    <div class="hud-zone"><span class="lbl">ZONE</span> LE DÉDALE</div>
+    <div class="hud-stats">
+      <span class="hud-chaos" id="hudChaos" title="Chaos causé pendant cette partie"><span class="lbl">CHAOS</span> <b id="chaosN">0</b></span>
+      <span class="hud-time"><span class="lbl">TEMPS</span> <b id="timeN">00:00:00</b></span>
     </div>
-    <div class="cierge-hote"><canvas class="cierge petit" data-cire=".8"></canvas></div>
+    <div class="hud-btns">
+      <button type="button" class="hbtn" id="sndBtn" aria-pressed="false" data-sfx="none">♪ SON <b>OFF</b></button>
+      <button type="button" class="hbtn" id="crtBtn" aria-pressed="true">CRT <b>ON</b></button>
+    </div>
   </header>
-  <div class="folio brule">
-    <div class="texte enlumine psy" id="psycho"></div>
+
+  <div class="layout">
+    <div class="left">
+      <nav class="win menu" id="menu" aria-label="Menu principal">
+        <p class="win-cap">MENU</p>
+        <ul>
+          <li><button type="button" class="mi" data-go="statut"><i class="ico" data-ico="statut"></i><span class="l-long">STATUT</span><span class="l-short">STATUT</span></button></li>
+          <li><button type="button" class="mi" data-go="psyche"><i class="ico" data-ico="psyche"></i><span class="l-long">PSYCHÉ</span><span class="l-short">PSYCHÉ</span></button></li>
+          <li><button type="button" class="mi" data-go="balade"><i class="ico" data-ico="balade"></i><span class="l-long">BALADE</span><span class="l-short">BALADE</span></button></li>
+          <li><button type="button" class="mi" data-go="relations"><i class="ico" data-ico="relations"></i><span class="l-long">RELATIONS</span><span class="l-short">RELAT.</span></button></li>
+          <li><button type="button" class="mi" data-go="competences"><i class="ico" data-ico="competences"></i><span class="l-long">COMPÉTENCES</span><span class="l-short">COMPÉT.</span></button></li>
+          <li><button type="button" class="mi" data-go="titres"><i class="ico" data-ico="titres"></i><span class="l-long">TITRES</span><span class="l-short">TITRES</span></button></li>
+          <li><button type="button" class="mi" data-go="album"><i class="ico" data-ico="album"></i><span class="l-long">ALBUM</span><span class="l-short">ALBUM</span></button></li>
+          <li><button type="button" class="mi" data-go="sauvegarder"><i class="ico" data-ico="sauvegarder"></i><span class="l-long">SAUVEGARDER</span><span class="l-short">SAUVER</span></button></li>
+        </ul>
+        <span class="hand" id="hand" aria-hidden="true"></span>
+      </nav>
+      <aside class="win side" aria-label="Partie en cours">
+        <canvas id="sideSprite" width="16" height="24" aria-hidden="true"></canvas>
+        <div>
+          <p class="side-name">CROC</p>
+          <p class="side-row"><span class="lbl">ENE</span> <span class="mini-bar"><i id="sideEne"></i></span></p>
+          <p class="side-row"><span class="lbl">CATAS.</span> <b id="cataN">0</b></p>
+        </div>
+      </aside>
+      <p class="keys-hint" aria-hidden="true">↑↓ choisir · Entrée valider · Échap retour</p>
+    </div>
+
+    <main class="win panel" id="panel" tabindex="-1" aria-live="polite"></main>
   </div>
-  <div class="procession-bloc brule">
-    <div class="procession-tete">
-      <h3 class="rubrique">La procession <small>— vue de Croc</small></h3>
-      <p class="chaos" aria-live="polite">Chaos <b id="chaos">0</b></p>
-    </div>
-    <div class="procession" id="procession" role="group" aria-label="Procession : clique sur une silhouette pour la juger"></div>
-    <p class="consigne">Survole ou parcours au clavier : tout le monde est un NPC. Clique pour juger : <b class="m">mauvais NPC</b> · <b class="b">bon NPC</b> · neutre. La frontière est très mince. Une seule flamme n'appartient pas à un NPC.</p>
-    <p class="systeme registre-sys" id="procLog" aria-live="polite">[SYSTÈME] Procession en cours.</p>
-  </div>
-</section>
 
-<!-- ============ III · STATISTIQUES ============ -->
-<section class="chap" id="chap-3" data-num="Chapitre III" data-nom="Statistiques">
-  <header class="chap-tete brule">
-    <div class="cierge-hote"><canvas class="cierge petit" data-cire=".75"></canvas></div>
-    <div>
-      <p class="chap-kicker">Chapitre III · Du sang et de la force</p>
-      <h2>Statistiques</h2>
-      <p class="systeme">[SYSTÈME] Fiche // Statistiques</p>
-    </div>
-    <div class="cierge-hote"><canvas class="cierge petit" data-cire=".5"></canvas></div>
-  </header>
-  <div class="folio brule">
-    <h3 class="rubrique">Les fioles <small>— vingt graduations chacune</small></h3>
-    <div class="fioles" id="fioles"></div>
-    <p class="note-bonus" id="noteBonus"></p>
-  </div>
-  <div class="folio brule">
-    <h3 class="rubrique">Les rosaces <small>— la lumière qui reste</small></h3>
-    <div class="rosaces" id="rosaces"></div>
-  </div>
-</section>
-
-<!-- ============ IV · COMPÉTENCES ============ -->
-<section class="chap" id="chap-4" data-num="Chapitre IV" data-nom="Compétences">
-  <header class="chap-tete brule">
-    <div class="cierge-hote"><canvas class="cierge petit" data-cire=".65"></canvas></div>
-    <div>
-      <p class="chap-kicker">Chapitre IV · Des dons maudits</p>
-      <h2>Compétences</h2>
-      <p class="systeme">[SYSTÈME] Fiche // Compétences</p>
-    </div>
-    <div class="cierge-hote"><canvas class="cierge petit" data-cire=".45"></canvas></div>
-  </header>
-  <div id="dons"></div>
-</section>
-
-<!-- ============ V · TITRE ============ -->
-<section class="chap" id="chap-5" data-num="Chapitre V" data-nom="Titre">
-  <header class="chap-tete brule">
-    <div class="cierge-hote"><canvas class="cierge petit" data-cire=".9"></canvas></div>
-    <div>
-      <p class="chap-kicker">Chapitre V · De la gloire</p>
-      <h2>Titre</h2>
-      <p class="systeme">[SYSTÈME] Titre obtenu</p>
-    </div>
-    <div class="cierge-hote"><canvas class="cierge petit" data-cire=".6"></canvas></div>
-  </header>
-  <div id="titres"></div>
-</section>
-
-<!-- ============ VI · GALERIE ============ -->
-<section class="chap" id="chap-6" data-num="Chapitre VI" data-nom="Galerie">
-  <header class="chap-tete brule">
-    <div class="cierge-hote"><canvas class="cierge petit" data-cire=".55"></canvas></div>
-    <div>
-      <p class="chap-kicker">Chapitre VI · Des vitraux</p>
-      <h2>Galerie</h2>
-      <p class="systeme">[SYSTÈME] Images associées</p>
-    </div>
-    <div class="cierge-hote"><canvas class="cierge petit" data-cire=".85"></canvas></div>
-  </header>
-  <div class="galerie brule" id="galerie"></div>
-
-  <footer class="pied">
-    <p class="explicit">Explicit</p>
-    <p class="systeme">[SYSTÈME] Fin de la fiche. Les cierges restent allumés.</p>
-    <button type="button" class="btn-or" id="refermer">Refermer le livre</button>
-    <p class="credit">Illustrations : fan arts, droits réservés à leurs auteurs. Personnage issu de l'univers du Dédale.</p>
+  <footer class="foot">
+    <p class="credit">Illustrations : fan arts, droits réservés à leurs auteurs.</p>
+    <p class="foot-sub">Fiche de personnage · Le Dédale · BALADE : mini-jeu au clavier, à la manette ou au doigt · Aucun fichier son : tout est synthétisé en direct.</p>
   </footer>
-</section>
-
-</main>
-
-<!-- ============ VISIONNEUSE ============ -->
-<div id="visionneuse" role="dialog" aria-modal="true" aria-label="Image agrandie" hidden>
-  <figure class="vis-cadre cadre-or">
-    <img id="visImg" alt="">
-    <figcaption id="visLeg"></figcaption>
-  </figure>
-  <button type="button" class="vis-btn prec" id="visPrec" aria-label="Image précédente">‹</button>
-  <button type="button" class="vis-btn suiv" id="visSuiv" aria-label="Image suivante">›</button>
-  <button type="button" class="btn-petit vis-fermer" id="visFermer">Fermer</button>
 </div>
+
+<!-- =========================== DIALOGUE =========================== -->
+<div id="dlg" hidden>
+  <div class="dlg-back" id="dlgBack"></div>
+  <div class="dlg-box win" id="dlgBox" role="dialog" aria-modal="true" aria-label="Dialogue" tabindex="-1">
+    <span class="dlg-name" id="dlgName">SYSTÈME</span>
+    <canvas class="dlg-face" id="dlgFace" width="32" height="32" aria-hidden="true"></canvas>
+    <p class="dlg-text" aria-hidden="true"><span id="dlgText"></span></p>
+    <p class="sr-only" id="dlgLive" aria-live="assertive"></p>
+    <span class="dlg-next" id="dlgNext" aria-hidden="true">▼</span>
+    <span class="dlg-skip">Entrée : suite · Échap : passer</span>
+  </div>
+</div>
+
+<!-- =========================== ALBUM (agrandissement) =========================== -->
+<div id="lb" hidden>
+  <div class="lb-back" id="lbBack"></div>
+  <div class="lb-win win" role="dialog" aria-modal="true" aria-labelledby="lbCap" tabindex="-1" id="lbWin">
+    <div class="lb-top"><span class="lbl" id="lbNum">01 / 05</span><button type="button" class="hbtn" id="lbX" aria-label="Fermer">✕ FERMER</button></div>
+    <div class="lb-stage" id="lbStage"></div>
+    <p class="lb-cap" id="lbCap"></p>
+    <div class="lb-nav"><button type="button" class="hbtn" id="lbPrev">◀ PRÉC.</button><button type="button" class="hbtn" id="lbNext">SUIV. ▶</button></div>
+  </div>
+</div>
+
+<canvas id="wipe" aria-hidden="true"></canvas>
+<div id="flash" aria-hidden="true"></div>
+<div id="crt" aria-hidden="true"></div>
 
 <script src="data.js"></script>
+<script src="balade.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

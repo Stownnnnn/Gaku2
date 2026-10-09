@@ -31,9 +31,9 @@ champs: [
   { label: 'Croyance', valeur: 'Aucune' },
 ],
 physique: [
-  "Il soulève de la fonte dès qu'il ne tue pas de monstres : son corps est bâti « comme une machine ».",
+  "Il soulève de la fonte dès qu'il ne tue pas de monstres et à force son corps est bâti « comme une machine ».",
   "Il est couvert de cicatrices de toutes tailles, laissées par des monstres comme par des êtres doués de raison.",
-  "Muet et handicapé de naissance.",
+  "Muet.",
 ],
 
 /* PSYCHOLOGIE */
@@ -41,7 +41,7 @@ psycho: [
   "Difficile à cerner, distant, froid. Aucune émotion ne passe sur son visage : il semble absorbé dans son propre monde.",
   "Il considère la plupart des gens comme des NPC, une habitude venue des jeux vidéo, auxquels il joue depuis tout petit.",
   "Son frère, Eilyn, est la seule exception, à cause des circonstances inhabituelles de leur naissance.",
-  "Il s'en est déjà pris à des gens qu'il jugeait « mauvais NPC » et a causé du Chaos. La frontière entre bon et mauvais NPC est très mince pour lui : prudence en l'abordant.",
+  "Il s'en est déjà pris à des gens qu'il jugeait comme des « mauvais NPC », cela a souvent mené à des bagarres de rues. La frontière entre bon et mauvais NPC est très mince pour lui : prudence en l'abordant.",
 ],
 
 /* STATISTIQUES (max 20 = barre à niveaux) */
@@ -60,11 +60,12 @@ rolls: [
   { nom: 'Roll Magie',  val: 100 },
 ],
 
-/* COMPÉTENCES */
+/* COMPÉTENCES
+   groupe : 'Spéciale' ou 'Classique' (titres de groupe dans l'écran COMPÉTENCES) */
 competences: [
   {
-    nom: 'Lien Infortuné', type: 'Active', icone: 'lien',
-    desc: "Crée un lien inséparable avec une cible et lui transfère la chance de l'utilisateur. Le malheur accumulé déclenche un événement catastrophique aléatoire. Le Système prévient quelques secondes avant, mais l'utilisateur est toujours compté parmi les victimes. Les dégâts collatéraux peuvent provoquer des catastrophes plus grandes que prévu.",
+    nom: 'Lien Infortuné', groupe: 'Spéciale', type: 'Active', icone: 'lien',
+    desc: "Crée un lien inséparable avec une cible et lui transfère la chance de l'utilisateur. Le malheur accumulé déclenche un événement catastrophique aléatoire. Le Système prévient l'utilisateur quelques secondes avant, mais l'utilisateur est toujours compté parmi les victimes. Les dégâts collatéraux peuvent provoquer des catastrophes plus grandes que prévu.",
     des: 100,   /* dé lancé au LV.5 (1 à des) — valeur à confirmer */
     niveaux: [
       { lv: 1, cout: 40, preavis: 5,  requis: 'Niveau de départ.' },
@@ -76,8 +77,23 @@ competences: [
     ],
   },
   {
-    nom: 'Maîtrise des armes lourdes', type: 'Classique', icone: 'marteau', niveau: 1,
-    desc: "Progresse à force d'utiliser des armes lourdes. Il est de mieux en mieux.",
+    nom: 'Accumulation du Chaos', groupe: 'Spéciale', type: 'Active', icone: 'chaos', niveau: 1,
+    desc: "Le Chaos est une marque que Croc applique à ses adversaires. Chaque personne ou monstre marqué qu'il abattra lui fera absorber cette marque et renforcera ses statistiques de 0,5 %. La compétence évolue en absorbant des marques.",
+    /* cout = % d'ENE · recharge = adversaires tués après une marque absorbée
+       bonus = renfort par marque (en %) · marques = marques posées par rechargement */
+    niveaux: [
+      { lv: 1, cout: 10, recharge: 5,  bonus: 0.5, marques: 1, requis: 'Niveau de départ.' },
+      { lv: 2, cout: 10, recharge: 10, bonus: 0.5, marques: 1, requis: '5 marques absorbées depuis le niveau précédent.' },
+      { lv: 3, cout: 10, recharge: 15, bonus: 1,   marques: 1, requis: '5 marques absorbées depuis le niveau précédent.',
+        special: "Les marques renforcent les statistiques de Force Physique, de Force Musculaire et de Robustesse de Croc désormais de 1 % par 1 %." },
+      { lv: 4, cout: 10, recharge: 25, bonus: 1,   marques: 1, requis: '10 marques absorbées depuis le niveau précédent.' },
+      { lv: 5, cout: 10, recharge: 35, bonus: 1,   marques: 2, requis: '10 marques absorbées depuis le niveau précédent.',
+        special: "Croc peut désormais poser ses marques sur deux adversaires simultanément à chaque rechargement." },
+    ],
+  },
+  {
+    nom: 'Maîtrise des armes lourdes', groupe: 'Classique', type: 'Classique', icone: 'marteau', niveau: 1,
+    desc: "Progresse à force d'utiliser des armes lourdes. La compétence n'a aucun effet.",
   },
 ],
 /* Événements de la simulation (exemples libres, remplace-les à ta guise) */
@@ -85,6 +101,29 @@ catastrophes: [
   'Plafond effondré', 'Rupture de canalisation', 'Panne générale', 'Incendie spontané',
   'Pont rompu', 'Stampede de monstres', 'Court-circuit en chaîne', 'Éboulement',
 ],
+
+/* RELATIONS — écran RELATIONS du menu.
+   Pour ajouter quelqu'un : copie un bloc { ... } et change les valeurs.
+   statut   : 'ALLIÉ' | 'NEUTRE' | 'ENNEMI' | 'INCONNU' (couleur et icône automatiques), null = non défini
+   npc      : false = Croc ne le voit PAS comme un NPC (sinon, laisse true)
+   affinite : 0 à 100 (affichée en cœurs), ou null si non évaluée
+   portrait : 'images/mon-image.jpg' (rendue en pixel art), ou null pour un sprite
+   citation, rencontre, derniereMaj, note : texte, ou null pour ne rien afficher */
+relations: [
+  {
+    nom: 'Eilyn', role: 'Frère', statut: null, npc: false, affinite: null,
+    citation: null, portrait: 'images/eilyn-portrait.jpg', rencontre: null, derniereMaj: null,
+    note: "Le seul que Croc ne voit pas comme un NPC, à cause des circonstances inhabituelles de leur naissance.",
+  },
+  /* Exemple à copier :
+  {
+    nom: 'Nom', role: 'Rôle / lieu de rencontre', statut: 'NEUTRE', npc: true, affinite: 40,
+    citation: '« ... »', portrait: null, rencontre: 'Jour 01, Le Dédale', derniereMaj: 'Jour 02',
+    note: null,
+  },
+  */
+],
+relationsCases: 6,   // nombre de cases affichées (les vides sont grisées)
 
 /* TITRE */
 titres: [
@@ -104,4 +143,22 @@ galerie: [
   { src: 'images/croc-sourire.jpg',  alt: 'Croc souriant, cicatrices fraîches sur la joue' },
 ],
 
+};
+
+/* =====================================================================
+   AJOUT PROPRE À LA VARIANTE « JEU VIDÉO RÉTRO » (optionnel)
+   Répliques génériques des PNJ dans l'écran PSYCHÉ. Ce ne sont PAS des
+   faits sur Croc : juste des phrases toutes faites de PNJ de jeu vidéo.
+   Tu peux les modifier, en ajouter ou supprimer ce bloc entier.
+   ===================================================================== */
+window.CROC.retro = {
+  repliquesPNJ: [
+    'Bonjour, voyageur !',
+    'Belle journée, hein ?',
+    'Je dis toujours la même phrase.',
+    '…',
+    'Hé ! Arrête de me fixer comme ça.',
+    'Tu as l\'air costaud, toi.',
+    'Bienvenue ! Bienvenue ! Bienvenue !',
+  ],
 };

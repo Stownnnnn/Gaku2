@@ -1,73 +1,115 @@
-CROC — LIVRE D'HEURES (variante « gothique vampire »)
-=====================================================
-Site statique (HTML/CSS/JS, sans installation) prêt pour GitHub Pages.
+CROC — VARIANTE « JEU VIDÉO RÉTRO » (JRPG 16-bit)
+=================================================
+
+Le monde tel que Croc le perçoit : un vieux jeu de rôle 16-bit.
+Écran titre « APPUIE SUR START », menu de pause, boîtes de dialogue,
+scène à explorer, combat, jingle de titre, album pixelisé, sauvegarde,
+et BALADE : un mini-jeu d'exploration en vue de côté, de nuit, façon cassette VHS.
+Aucune installation, aucun fichier son : musique et bruitages sont
+fabriqués en direct par le navigateur.
 
 CONTENU DU DOSSIER
-- index.html   la structure de la page
-- style.css    l'apparence (cathédrale, or, sang, vitraux)
-- app.js       les effets, les sons et les interactions
-- data.js      TOUT le texte de la fiche (c'est le seul fichier à modifier)
-- images/      les 5 illustrations
-- .nojekyll    fichier vide, à garder (dit à GitHub de servir le site tel quel)
-- LISEZMOI.txt ce fichier
+- index.html, style.css, app.js : le site (ne pas renommer).
+- balade.js : le mini-jeu BALADE (si ce fichier manque, l'entrée BALADE disparaît du menu).
+- data.js : TOUT le contenu de la fiche (textes, stats, compétences…).
+- images/ : les 5 illustrations.
+- .nojekyll : fichier vide utile à GitHub Pages (laisse-le).
+- LISEZMOI.txt : ce fichier.
+
 
 METTRE EN LIGNE SUR GITHUB PAGES
-1. Si tu as reçu un .zip : dézippe-le d'abord sur ton ordinateur.
+1. Si tu as reçu un .zip, dézippe-le d'abord (GitHub n'affiche pas un .zip comme site).
 2. Sur github.com : bouton « + » en haut à droite > « New repository ».
-   Nom : par exemple « croc ». Visibilité : Public. Puis « Create repository ».
+   Nom : par exemple « croc » · visibilité : Public · « Create repository ».
 3. Dans le dépôt vide, clique sur le lien « uploading an existing file »
    (ou plus tard : « Add file » > « Upload files »).
    Glisse le CONTENU du dossier (index.html, style.css, app.js, data.js,
-   LISEZMOI.txt, .nojekyll et le dossier images/), PAS le dossier lui-même :
-   index.html doit se retrouver à la racine du dépôt.
-   Astuce : le fichier .nojekyll est « caché » sur certains ordinateurs. S'il
-   n'apparaît pas, ce n'est pas grave, le site fonctionne sans.
-4. Clique sur « Commit changes ».
+   LISEZMOI.txt, .nojekyll et le dossier images/), pas le dossier lui-même.
+   Astuce : le fichier .nojekyll est « caché » sur certains ordinateurs ;
+   s'il n'apparaît pas, ce n'est pas grave, le site fonctionne sans.
+4. En bas de la page : « Commit changes ».
 5. Onglet « Settings » > « Pages » (menu de gauche) > « Build and deployment » :
-   Source = « Deploy from a branch », Branch = « main », dossier « / (root) »,
-   puis « Save ».
-6. Attends 1 à 2 minutes et recharge la page Pages : l'adresse s'affiche en haut,
+   Source = « Deploy from a branch » · Branch = « main » · dossier « / (root) » · « Save ».
+6. Attends 1 à 2 minutes puis recharge la page « Pages » : l'adresse s'affiche en haut,
    du type https://TON-PSEUDO.github.io/croc/
 
-MODIFIER LA FICHE (data.js)
-- Sur GitHub : clique sur data.js > icône crayon (Edit) > modifie > « Commit changes ».
-  Le site se met à jour en une minute environ.
-- Garde la ponctuation du fichier : chaque texte est entre apostrophes ' ' ou
-  guillemets " ", et chaque élément se termine par une virgule.
-  Si un texte contient une apostrophe (l'arme, d'un...), écris-le entre
-  guillemets "..." ou mets une barre devant : 'l\'arme'.
-- Ce que chaque partie change sur le site :
-    nom, sousTitre, boot      -> la page d'ouverture (titre, sous-titre, lignes du Système)
-    champs, physique          -> Chapitre I (registre + texte à lettrine)
-    psycho, frere             -> Chapitre II (texte enluminé + procession ;
-                                 le nom du frère est celui qui porte la seule bougie allumée)
-    stats, rolls              -> Chapitre III (fioles de sang graduées sur 20 ; rosaces sur 100)
-                                 « bonus » affiche un sceau d'or sur la fiole
-    competences               -> Chapitre IV (le rituel du Lien Infortuné, niveaux LV.I à LV.V,
-                                 et la Maîtrise des armes lourdes)
-    catastrophes              -> événements tirés au sort pendant la simulation du rituel
-    titres                    -> Chapitre V (la pierre gravée)
-    galerie                   -> Chapitre VI (les vitraux)
-- Ce qui n'est pas connu reste « ??? » : rien n'a été inventé en dehors de ta fiche.
-- Deux libertés à vérifier :
-    * le dé du niveau 5 est simulé de 1 à 100 (champ « des » dans data.js) ;
-    * la liste « catastrophes » est un exemple libre, remplace-la à ta guise.
 
-AJOUTER UNE IMAGE
-1. Dans le dépôt, ouvre le dossier images/ > « Add file » > « Upload files ».
-2. Dans data.js, ajoute une ligne dans « galerie », par exemple :
-   { src: 'images/mon-image.jpg', alt: 'Description courte de l\'image' },
+MODIFIER LE CONTENU (data.js)
+- Sur GitHub : clique sur data.js > icône crayon (Edit) > modifie > « Commit changes ».
+  Le site se met à jour en une minute environ (recharge la page, au besoin Ctrl+F5).
+- Garde bien les guillemets et les virgules : chaque texte est entre '…' et suivi d'une virgule.
+  Pour écrire une apostrophe dans un texte entre '…', mets un \ devant : 'l\'arme'.
+- Ce que lit chaque écran :
+  · STATUT : nom, sousTitre, champs (identité), physique, stats (sur 20, « bonus » optionnel), rolls (sur 100).
+  · PSYCHÉ : psycho (les 4 textes du journal) et frere (le seul qui n'est pas un NPC).
+  · COMPÉTENCES : competences (Lien Infortuné : niveaux, coût, préavis, condition, spécial, « des » = faces du dé)
+    et catastrophes (liste d'exemples tirés au hasard pendant la simulation).
+  · TITRES : titres (nom, condition, effet).
+  · ALBUM : galerie (chemin de l'image + description).
+  · Écran de démarrage : boot (les lignes du Système).
+- Ajouter une image : « Add file » > « Upload files » dans le dossier images/,
+  puis ajoute une ligne dans « galerie » : { src: 'images/mon-image.jpg', alt: 'description' },
+- Tout en bas de data.js, le bloc « retro » contient les répliques génériques des PNJ
+  de l'écran PSYCHÉ (ce ne sont pas des faits sur Croc). Modifie-les librement.
+
 
 À SAVOIR
-- Aucun fichier son : l'orgue, les cloches, le chœur, le crépitement des cierges,
-  le cœur, le marteau et le verre brisé sont fabriqués en direct par le navigateur.
-  Ils ne démarrent qu'après un clic sur « Pousser les portes » (règle des navigateurs).
-  Le bouton « Son » en haut à droite les coupe ou les rallume à tout moment.
-- Les polices viennent de Google Fonts. Sans connexion, le site utilise des polices
-  de secours (il reste lisible, mais moins gothique).
-- Compatible mobile et clavier (Tab / Entrée / Échap / flèches dans la visionneuse).
-  Si l'appareil demande « réduire les animations », les tremblements, la poussière
-  et les éclats de verre sont désactivés ou adoucis.
-- Illustrations : fan arts, droits réservés à leurs auteurs. Si tu connais les
-  artistes, ajoute leurs noms dans la phrase du pied de page (index.html,
-  ligne qui contient class="credit").
+- Le son ne démarre qu'après un clic ou la touche Entrée sur START (règle des navigateurs).
+  « JOUER SANS SON » démarre en silence ; le bouton « ♪ SON » (ou la touche M) coupe/remet le son.
+- Clavier : flèches + Entrée dans les menus, Échap pour revenir au menu ou passer un dialogue.
+  Dans PSYCHÉ : flèches ou ZQSD pour marcher, Entrée pour parler. Souris et tactile aussi.
+- Bouton « CRT » : active/désactive l'effet d'écran cathodique (lignes de balayage).
+- Si ton système demande de réduire les animations, tremblements, flashs et transitions sont coupés.
+- Rendu « TRAMÉ 16 COUL. » de l'album : il fonctionne une fois le site en ligne. Si tu ouvres
+  index.html directement depuis ton ordinateur, le navigateur bloque la lecture des pixels
+  et l'album affiche le rendu PIXEL à la place (c'est normal).
+- SAUVEGARDER : la partie (chaos, catastrophes, temps…) est gardée dans TON navigateur
+  uniquement ; « Exporter une capture » télécharge une image PNG de la sauvegarde.
+- Rien n'a été inventé sur Croc : nom et prénom restent « ??? ». Eilyn a son propre sprite
+  (d'après l'illustration de référence) et son portrait dans images/eilyn-portrait.jpg. Les catastrophes de la simulation et le dé
+  de 1 à 100 du niveau 5 viennent de data.js (« catastrophes » et « des ») : ajuste-les si besoin.
+- Illustrations : fan arts, droits réservés à leurs auteurs. Si tu connais les artistes,
+  ajoute leurs noms dans la phrase du pied de page (index.html, classe « credit »).
+
+[ACCUMULATION DU CHAOS] (écran COMPÉTENCES)
+- Commande CHAOS : pose la marque sur la cible (2 marques au LV.5), coût en ENE.
+- MARTEAU abat la cible : si elle est marquée, la marque est absorbée (renfort affiché),
+  sinon l'adversaire compte pour le rechargement. Un nouvel adversaire apparaît ensuite.
+- Réglages par niveau dans data.js (competences > Accumulation du Chaos > niveaux) :
+  cout, recharge, bonus (renfort par marque en %), marques (posées par rechargement).
+
+RELATIONS (nouvel écran du menu)
+- Tout se règle dans data.js, bloc « relations » (un exemple à copier est en commentaire) :
+  nom, role, statut ('ALLIÉ' / 'NEUTRE' / 'ENNEMI' / 'INCONNU', ou null),
+  npc (false = Croc ne le voit pas comme un NPC, comme Eilyn), affinite (0 à 100 → cœurs, ou null),
+  citation (dite quand on clique sur PARLER, Croc répond « …… »), portrait ('images/xxx.jpg' ou null),
+  rencontre, derniereMaj, note.
+- relationsCases : nombre de cases affichées (les vides sont grisées).
+- Filtres par statut et tri par affinité dans l'écran.
+
+BALADE (nouvel écran du menu) — mini-jeu en vue de côté
+- Croc se balade de nuit dans cinq zones reliées : TOITS (sous la pluie) → RUELLE (enseignes néon)
+  → COULOIR (la porte rouge) → ESCALIER → SOUTERRAINS. Ambiance néon-noir, écran VHS.
+- Dans le menu, BALADE affiche la « cassette » : bouton « INSÉRER LA CASSETTE » → plein écran.
+  « ◀ MENU » ou Échap ramène au menu ; la partie reste en mémoire tant que la page est ouverte
+  (« REPRENDRE LA BANDE »), « NOUVELLE BANDE » recommence.
+- Clavier (AZERTY et QWERTY) :
+  · marcher : ← → ou Q D (AZERTY) ou A D (QWERTY)
+  · sauter : Espace, ↑, Z ou W (maintenir = sauter plus haut)
+  · marteau : X, J ou clic (vers le pointeur) ; en l'air + ↓ : pilon (onde de choc à l'atterrissage)
+  · roulade : C, K ou clic droit (esquive ; appuyée juste avant de toucher le sol, elle amortit la chute)
+  · ralenti : Maj maintenu (jauge-batterie en haut à gauche, se recharge toute seule)
+  · parler / entrer : E ou ↓ près de quelqu'un ou d'une porte
+  · R : relecture des dernières secondes (« ◀◀ REW » puis « ▶ PLAY ») · P : pause · M : son
+- Manette : croix/stick, A saut, X marteau, B roulade, gâchettes ralenti, Y parler, Start menu.
+- Téléphone : croix et boutons à l'écran (PARLER, RALENTI, ROULADE, MARTEAU, SAUT).
+- Ce qu'on y fait : abattre les monstres du Dédale (silhouettes d'ombre ; compteur en haut à droite),
+  casser caisses, barils et enseignes néon. Les PNJ portent l'étiquette « NPC » : ce ne sont pas des
+  cibles (le coup passe à côté, ils sursautent) ; on peut leur parler (répliques génériques du bloc
+  « retro » de data.js), Croc répond « …… ». Un seul personnage n'est pas un NPC : son frère.
+- Touché par un monstre ou tombé dans le vide : la bande se rembobine de quelques secondes.
+- À la sortie des souterrains : « FIN DE LA BANDE », relecture automatique, temps et record
+  (gardés dans ce navigateur uniquement).
+- Musique et bruitages sont synthétisés ; pendant le ralenti la bande ralentit et le son s'étouffe.
+- Le bouton VHS (= bouton CRT du site) coupe le filtre vidéo ; si le système demande de réduire
+  les animations, tremblements, flashs et effets VHS sont supprimés.
