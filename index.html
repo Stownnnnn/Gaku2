@@ -2,119 +2,97 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CROC — Le Dédale (16-bit)</title>
-<meta name="description" content="Croc, vampire de 22 ans, muet de naissance. Fiche de personnage du Dédale, version jeu vidéo rétro.">
-<meta name="theme-color" content="#0b0a10">
-<meta property="og:title" content="CROC — Le Dédale">
-<meta property="og:description" content="APPUIE SUR START. Presque tout le monde est un NPC.">
-<meta property="og:image" content="images/croc-accroupi.jpg">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' shape-rendering='crispEdges'%3E%3Crect width='8' height='8' fill='%230b0a10'/%3E%3Cpath d='M1 1h1v1H1zM3 1h1v1H3zM5 1h1v1H5zM1 2h6v2H1z' fill='%23e8e0cc'/%3E%3Cpath d='M2 4h4v1H2z' fill='%23d9cbbd'/%3E%3Cpath d='M2 5h4v2H2z' fill='%232a2140'/%3E%3Cpath d='M3 4h1v1H3zM5 4h1v1H5z' fill='%23e0263d'/%3E%3C/svg%3E">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CROC // SYSTÈME DU DÉDALE</title>
+<meta name="description" content="Fiche de sujet générée par le Système du Dédale : CROC.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23000'/%3E%3Cpath d='M2 2h12v12H2z' fill='none' stroke='%234aff4a' stroke-width='2'/%3E%3Cpath d='M5 5h6v2H7v2h4v2H5z' fill='%234aff4a'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Pixelify+Sans:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body class="crt">
+<body class="is-booting">
 
-<noscript><p class="noscript">Ce site est un petit jeu : active JavaScript pour appuyer sur START.</p></noscript>
+<a class="skip-link" href="#view">Aller au contenu</a>
 
-<!-- =========================== ÉCRAN TITRE =========================== -->
-<section id="title-screen" class="screen" aria-label="Écran titre">
-  <canvas id="tcv" aria-hidden="true"></canvas>
-  <h1 class="sr-only">CROC — Le Dédale</h1>
-  <div class="t-ui">
-    <div class="t-menu" id="tmenu">
-      <button type="button" class="t-opt t-start" id="startSound" data-sfx="none"><span class="blink">APPUIE SUR START</span></button>
-      <button type="button" class="t-opt t-mute" id="startMute" data-sfx="none">JOUER SANS SON</button>
+<!-- ============ DÉMARRAGE DU SYSTÈME ============ -->
+<div id="boot" role="dialog" aria-modal="true" aria-labelledby="bootTitle">
+  <div class="boot-frame">
+    <div class="boot-corner tl"></div><div class="boot-corner tr"></div>
+    <div class="boot-corner bl"></div><div class="boot-corner br"></div>
+    <div class="boot-head">
+      <span id="bootTitle">SYSTÈME DU DÉDALE</span>
+      <span class="boot-ver">TERMINAL // v0.9</span>
     </div>
-    <p class="t-hint">Entrée : START · ↑↓ : choisir · Les sons sont créés par ton navigateur</p>
-    <p class="credit">Illustrations : fan arts, droits réservés à leurs auteurs.</p>
-  </div>
-</section>
-
-<!-- =========================== JEU =========================== -->
-<div id="game" hidden>
-  <header class="hud">
-    <div class="hud-logo" aria-hidden="true">CROC</div>
-    <div class="hud-zone"><span class="lbl">ZONE</span> LE DÉDALE</div>
-    <div class="hud-stats">
-      <span class="hud-chaos" id="hudChaos" title="Chaos causé pendant cette partie"><span class="lbl">CHAOS</span> <b id="chaosN">0</b></span>
-      <span class="hud-time"><span class="lbl">TEMPS</span> <b id="timeN">00:00:00</b></span>
+    <div class="boot-standby" id="bootStandby">
+      <p class="boot-standby-line">[SYSTÈME] Terminal en veille<span class="blink-cursor" aria-hidden="true"></span></p>
+      <p class="boot-standby-sub">Une fiche de sujet attend d'être ouverte.</p>
+      <div class="boot-choice">
+        <button type="button" class="sys-btn" data-son="1">INITIALISER AVEC SON</button>
+        <button type="button" class="sys-btn sys-btn-ghost" data-son="0">SANS SON</button>
+      </div>
+      <p class="boot-hint">Entrée : avec son · Échap : sans son</p>
     </div>
-    <div class="hud-btns">
-      <button type="button" class="hbtn" id="sndBtn" aria-pressed="false" data-sfx="none">♪ SON <b>OFF</b></button>
-      <button type="button" class="hbtn" id="crtBtn" aria-pressed="true">CRT <b>ON</b></button>
+    <div class="boot-run" id="bootRun" hidden>
+      <div class="boot-log" id="bootLog" aria-live="polite"></div>
+      <div class="boot-progress" aria-hidden="true"><div class="boot-progress-fill" id="bootFill"></div></div>
+      <div class="boot-ident">
+        <span class="boot-ident-label">IDENTIFICATION DU SUJET</span>
+        <span class="boot-ident-name" id="bootName">????</span>
+      </div>
+      <div class="boot-granted" id="bootGranted" aria-hidden="true">ACCÈS AUTORISÉ</div>
+      <button type="button" class="boot-skip" id="bootSkip">PASSER ›</button>
     </div>
-  </header>
-
-  <div class="layout">
-    <div class="left">
-      <nav class="win menu" id="menu" aria-label="Menu principal">
-        <p class="win-cap">MENU</p>
-        <ul>
-          <li><button type="button" class="mi" data-go="statut"><i class="ico" data-ico="statut"></i><span class="l-long">STATUT</span><span class="l-short">STATUT</span></button></li>
-          <li><button type="button" class="mi" data-go="psyche"><i class="ico" data-ico="psyche"></i><span class="l-long">PSYCHÉ</span><span class="l-short">PSYCHÉ</span></button></li>
-          <li><button type="button" class="mi" data-go="balade"><i class="ico" data-ico="balade"></i><span class="l-long">BALADE</span><span class="l-short">BALADE</span></button></li>
-          <li><button type="button" class="mi" data-go="relations"><i class="ico" data-ico="relations"></i><span class="l-long">RELATIONS</span><span class="l-short">RELAT.</span></button></li>
-          <li><button type="button" class="mi" data-go="competences"><i class="ico" data-ico="competences"></i><span class="l-long">COMPÉTENCES</span><span class="l-short">COMPÉT.</span></button></li>
-          <li><button type="button" class="mi" data-go="titres"><i class="ico" data-ico="titres"></i><span class="l-long">TITRES</span><span class="l-short">TITRES</span></button></li>
-          <li><button type="button" class="mi" data-go="album"><i class="ico" data-ico="album"></i><span class="l-long">ALBUM</span><span class="l-short">ALBUM</span></button></li>
-          <li><button type="button" class="mi" data-go="sauvegarder"><i class="ico" data-ico="sauvegarder"></i><span class="l-long">SAUVEGARDER</span><span class="l-short">SAUVER</span></button></li>
-        </ul>
-        <span class="hand" id="hand" aria-hidden="true"></span>
-      </nav>
-      <aside class="win side" aria-label="Partie en cours">
-        <canvas id="sideSprite" width="16" height="24" aria-hidden="true"></canvas>
-        <div>
-          <p class="side-name">CROC</p>
-          <p class="side-row"><span class="lbl">ENE</span> <span class="mini-bar"><i id="sideEne"></i></span></p>
-          <p class="side-row"><span class="lbl">CATAS.</span> <b id="cataN">0</b></p>
-        </div>
-      </aside>
-      <p class="keys-hint" aria-hidden="true">↑↓ choisir · Entrée valider · Échap retour</p>
-    </div>
-
-    <main class="win panel" id="panel" tabindex="-1" aria-live="polite"></main>
-  </div>
-
-  <footer class="foot">
-    <p class="credit">Illustrations : fan arts, droits réservés à leurs auteurs.</p>
-    <p class="foot-sub">Fiche de personnage · Le Dédale · BALADE : mini-jeu au clavier, à la manette ou au doigt · Aucun fichier son : tout est synthétisé en direct.</p>
-  </footer>
-</div>
-
-<!-- =========================== DIALOGUE =========================== -->
-<div id="dlg" hidden>
-  <div class="dlg-back" id="dlgBack"></div>
-  <div class="dlg-box win" id="dlgBox" role="dialog" aria-modal="true" aria-label="Dialogue" tabindex="-1">
-    <span class="dlg-name" id="dlgName">SYSTÈME</span>
-    <canvas class="dlg-face" id="dlgFace" width="32" height="32" aria-hidden="true"></canvas>
-    <p class="dlg-text" aria-hidden="true"><span id="dlgText"></span></p>
-    <p class="sr-only" id="dlgLive" aria-live="assertive"></p>
-    <span class="dlg-next" id="dlgNext" aria-hidden="true">▼</span>
-    <span class="dlg-skip">Entrée : suite · Échap : passer</span>
   </div>
 </div>
 
-<!-- =========================== ALBUM (agrandissement) =========================== -->
-<div id="lb" hidden>
-  <div class="lb-back" id="lbBack"></div>
-  <div class="lb-win win" role="dialog" aria-modal="true" aria-labelledby="lbCap" tabindex="-1" id="lbWin">
-    <div class="lb-top"><span class="lbl" id="lbNum">01 / 05</span><button type="button" class="hbtn" id="lbX" aria-label="Fermer">✕ FERMER</button></div>
-    <div class="lb-stage" id="lbStage"></div>
-    <p class="lb-cap" id="lbCap"></p>
-    <div class="lb-nav"><button type="button" class="hbtn" id="lbPrev">◀ PRÉC.</button><button type="button" class="hbtn" id="lbNext">SUIV. ▶</button></div>
+<!-- ============ NAVIGATION ============ -->
+<header class="site-nav" id="siteNav">
+  <a class="brand" href="#fiche" aria-label="CROC — retour à la fiche">CROC<span class="brand-sub">// SUJET</span></a>
+  <div class="nav-right">
+    <nav class="tabs" id="tabs" aria-label="Sections de la fiche">
+      <a class="tab" href="#fiche" data-route="fiche">FICHE</a>
+      <a class="tab" href="#psyche" data-route="psyche">PSYCHÉ</a>
+      <a class="tab" href="#stats" data-route="stats">STATISTIQUES</a>
+      <a class="tab" href="#competences" data-route="competences">COMPÉTENCES</a>
+      <a class="tab" href="#titres" data-route="titres">TITRES</a>
+      <a class="tab" href="#relations" data-route="relations">RELATIONS</a>
+      <a class="tab" href="#archives" data-route="archives">ARCHIVES</a>
+    </nav>
+    <div class="nav-toggles">
+      <button class="toggle-btn" id="soundToggle" type="button" aria-pressed="false" title="Son (touche M)">
+        <span class="toggle-icon" aria-hidden="true">♪</span><span>SON</span>
+      </button>
+      <button class="toggle-btn" id="fxToggle" type="button" aria-pressed="true" title="Effets d'écran (lignes, pluie de données)">
+        <span class="toggle-icon" aria-hidden="true">▤</span><span>CRT</span>
+      </button>
+    </div>
   </div>
-</div>
+</header>
+<div class="sys-readout" id="readout" aria-hidden="true"></div>
 
-<canvas id="wipe" aria-hidden="true"></canvas>
-<div id="flash" aria-hidden="true"></div>
-<div id="crt" aria-hidden="true"></div>
+<!-- ============ CONTENU (rempli par app.js depuis data.js) ============ -->
+<main id="view" tabindex="-1">
+  <noscript><p class="noscript">[SYSTÈME] JavaScript est nécessaire pour ouvrir la fiche.</p></noscript>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-line"><span class="footer-dot" aria-hidden="true"></span>SYSTÈME DU DÉDALE — FICHE DE SUJET : CROC</div>
+  <p class="credit">Illustrations : fan arts, droits réservés à leurs auteurs.</p>
+  <p class="footer-seal">// WELCXME TO THE DEDALE</p>
+  <p class="footer-keys">Raccourcis : 1 à 7 = onglets · M = son · ? = aide</p>
+</footer>
+
+<!-- ============ COUCHES DU SYSTÈME ============ -->
+<div id="notifs" class="notifs" aria-live="polite" aria-atomic="false"></div>
+<div id="redAlert" class="red-alert" aria-hidden="true"></div>
+<div id="transVeil" aria-hidden="true"><div class="tv-scan"></div><div class="tv-label">CHARGEMENT…</div></div>
+<div id="signalCut" aria-hidden="true"></div>
+
+<div id="modalRoot"></div>
 
 <script src="data.js"></script>
-<script src="sprites.js"></script>
-<script src="balade.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
